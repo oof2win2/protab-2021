@@ -1,0 +1,5 @@
+bottles = {
+	"A": {
+		"positionsFrom": ["B", ]
+	}
+}

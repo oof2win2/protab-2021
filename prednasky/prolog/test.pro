@@ -1,19 +1,19 @@
-% person(kate).
-% person(maria).
-% person(roman).
+person(kate).
+person(maria).
+person(roman).
 
-% all_different_people(X, Y, Z) :-
-% 	dif(X, Y), dif(X, Z), dif(Y, Z),
-% 	person(X), person(Y), person(Z).
+all_different_people(X, Y, Z) :-
+	dif(X, Y), dif(X, Z), dif(Y, Z),
+	person(X), person(Y), person(Z).
 
-% solve(Doktor, Pravnik, Ucitel, Fletna, House, Piano) :-
-% 	all_different_people(Doktor, Pravnik, Ucitel),
-% 	all_different_people(Fletna, House, Piano),
-% 	dif(maria, Doktor),
-% 	Pravnik = Piano,
-% 	dif(maria, Ucitel),
-% 	House = Doktor,
-% 	dif(kate, Doktor).
+solve(Doktor, Pravnik, Ucitel, Fletna, House, Piano) :-
+	all_different_people(Doktor, Pravnik, Ucitel),
+	all_different_people(Fletna, House, Piano),
+	dif(maria, Doktor),
+	Pravnik = Piano,
+	dif(maria, Ucitel),
+	House = Doktor,
+	dif(kate, Doktor).
 
 % % same
 % %	is_empty([]).
