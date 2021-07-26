@@ -1,8 +1,5 @@
-from tqdm import tqdm
-
 with open("ar1.in", "r") as file:
     data = [[y for y in x] for x in file.read().split("\n")]
-
 
 def findNeighbors(x: int, y: int):
 	data[y][x] = "."
