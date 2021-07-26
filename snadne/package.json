@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@types/domutils": "^1.7.4",
+    "@types/node-fetch": "^2.5.12",
+    "domhandler": "^4.2.0",
+    "domutils": "^2.7.0",
+    "htmlparser": "^1.7.7",
+    "htmlparser2": "^6.1.0",
+    "node-fetch": "^2.6.1"
+  }
+}
