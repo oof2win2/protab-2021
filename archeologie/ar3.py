@@ -1,4 +1,3 @@
-# TODO: some optimizations
 from __future__ import annotations
 import heapq
 
@@ -7,6 +6,7 @@ with open("ar3.in", "r") as file:
 
 # some constants
 startx, starty = 1, 1
+goalx, goaly = 499, 499
 wall_strength = 11
 
 edges: list[Edge] = []
@@ -82,6 +82,7 @@ def dijkstra():
 				heapq.heappush(queue, neighbor)
 		
 	print("done")
+	print(output[goaly][goalx])
 	with open("ar3.out", "w+") as file:
 		file.write("\n".join([" ".join(["{:3s}".format(f"{node:.0f}") for node in row]) for row in output]))
 
