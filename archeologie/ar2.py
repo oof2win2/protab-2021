@@ -8,7 +8,6 @@ def getNeighbors(x: int, y: int, dist: int):
 		if y+dy > len(data) or y+dy < 0: continue
 		value = data[x+dx][y+dy]
 		if value != " ": continue
-		# data[x+dx][y+dy] = str(dist)
 		neigh.append([x+dx, y+dy])
 	return neigh
 
