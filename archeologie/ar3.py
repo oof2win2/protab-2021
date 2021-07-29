@@ -1,52 +1,90 @@
-from heapq import *
+# TODO: some optimizations
+from __future__ import annotations
+import heapq
 
-wall_strength = 10
+with open("ar3.in", "r") as file:
+	data = [[y for y in x] for x in file.read().split("\n")]
 
-# shortest path is infinity so shorter paths exist
-shortest_path = float("inf")
+# some constants
+startx, starty = 1, 1
+wall_strength = 11
 
-edges = []
+edges: list[Edge] = []
 
 class Node:
-	def __init__(this, x: int, y: int, value: str):
+	def __init__(this, x: int, y: int, value: str, dist: float = float("inf")):
 		this.x = x
 		this.y = y
 		this.value = value
-	def getEdges(this):
-		global edges
-		toReturn = []
-		for edge in edges:
-			if edge.start == this or edge.target == this:
-				toReturn.append(edge)
-		return toReturn
+		this.dist = dist
+		this.visited = False
+		this.edges = []
+	
+	def __eq__(self, o: Node):
+		return self.dist == o.dist
+	def __ne__(self, o: Node):
+		return self.dist != o.dist
+	def __lt__(self, o: Node):
+		return self.dist < o.dist
+	def __gt__(self, o: Node):
+		return self.dist > o.dist
+	
+
+nodes = [[Node(x, y, space) for x, space in enumerate(row)]
+			for y, row in enumerate(data)]
+
+nodes[starty][startx].dist = 0
 
 class Edge:
-	def __init__(this, x: int, y: int, sv: str, tx: int, ty: int, ev: str, dist: int):
+	def __init__(this, start: Node, target: Node, dist: float = float("inf")):
 		# x, y is current position. tx, ty is target position. dist is distance to position
-		this.start = Node(x, y, sv)
-		this.target = Node(tx, ty, ev)
+		this.start = start
+		this.target = target
 		this.dist = dist
 
-visited: set[Node] = {}
+# print(len(nodes), len(nodes[0]), nodes[500])
 
-def prepareGrid(grid: list[list[str]]) -> list[Edge]:
-	edges: list[Edge] = []
-	for y, row in enumerate(grid):
-		for x, sv in enumerate(row):
-			for dx, dy in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
-				if x+dx > len(grid[0])-1 or x+dx < 0: continue
-				if y+dy > len(grid)-1 or y+dy < 0: continue
-				print(y+dy, x+dx, len(grid[0]), len(grid))
+def getNeighbors(node: Node) -> list[Node]:
+	neighbors: list[Node] = []
+	for dx, dy in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
+		if node.x+dx > len(nodes[0])-1 or node.x+dx < 0: continue
+		if node.y+dy > len(nodes)-1 or node.y+dy < 0: continue
+		# print(node.y+dy, node.x+dx)
+		neighbor = nodes[node.y+dy][node.x+dx]
+		neighbors.append(neighbor)
+	return neighbors
 
-				ev = grid[y+dy][x+dx]
-				dist = 1 if sv == " " and ev == " " else wall_strength
-				edges.append(Edge(x, y, sv, x+dx, y+dy, ev, dist))
-	return edges
 
-# TODO: do djikstra
-# def Djikstra(nodes: list[list[Node]]):
-# 	node = nodes[0][0]
-# 	node.getEdges()
-with open("ar3.in", "r") as file:
-	grid = prepareGrid([[y for y in x] for x in file.read().split("\n")])
-print(len(grid))
+for row in nodes:
+	for node in row:
+		neighbors = getNeighbors(node)
+		for neighbor in neighbors:
+			dist = 1 if neighbor.value == " " else wall_strength
+			edge = Edge(node, neighbor, dist)
+			node.edges.append(edge)
+			neighbor.edges.append(edge)
+del neighbors
+
+def dijkstra():
+	queue = [nodes[starty][startx]]
+	output = [[0.0 for space in row] for row in nodes]
+	heapq.heapify(queue)
+
+	while queue:
+		node = heapq.heappop(queue)
+		for edge in node.edges:
+			neighbor = edge.target
+			if neighbor.dist > (node.dist + edge.dist):
+				neighbor.dist = node.dist + edge.dist
+				output[neighbor.y][neighbor.x] = neighbor.dist
+				if neighbor.visited: continue
+				neighbor.visited = True
+				heapq.heappush(queue, neighbor)
+		
+	print("done")
+	with open("ar3.out", "w+") as file:
+		file.write("\n".join([" ".join(["{:3s}".format(f"{node:.0f}") for node in row]) for row in output]))
+
+# print(data[10][9], nodes[10][9], nodes[10][9].getEdges()[0].dist)
+
+dijkstra()
