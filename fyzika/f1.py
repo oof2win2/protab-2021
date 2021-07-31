@@ -113,10 +113,11 @@ print("\n")
 for moon in moons:
 	print("{:3d} {:3d} {:3d} {:3d} {:3d} {:3d}".format(moon.x, moon.y, moon.z, moon.sx, moon.sy, moon.sz))
 print("\n")
+print(slozekRychlosti() * slozekRychlosti())
 
 
 
-# stepsToReturn = 0
+stepsToReturn = 0
 
 # while True:
 # 	stepsToReturn += 1
@@ -125,4 +126,3 @@ print("\n")
 # for moon in moons:
 # 	print("{:3d} {:3d} {:3d} {:3d} {:3d} {:3d}".format(moon.x, moon.y, moon.z, moon.sx, moon.sy, moon.sz))
 # print(stepsToReturn)
-
